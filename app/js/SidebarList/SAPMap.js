@@ -46,8 +46,8 @@ export default class SAPMap extends Component {
             <Picker
                 selectedValue={this.state.mapType}
                 onValueChange={(mapValue) => this.setState({mapType: mapValue})}>
-                    <Picker.Item label = "LUNCH" value = "lunchRoute" />
-                    <Picker.Item label = "BUS STOP" value = "busStop" />
+                    <Picker.Item label = "Lunch" value = "lunchRoute" />
+                    <Picker.Item label = "Bus Stop" value = "busStop" />
                     <Picker.Item label = "Overview" value = "overview" />
                 </Picker>
                 
