@@ -38,21 +38,9 @@ class MyHomeScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
 
     title: 'Seletar Aerospace Park',
-    drawerLabel: 'Home',
+   
     headerStyle: {
     },
-    headerLeft: (
-        <View style={{padding:20, }}>
-            <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
-            <Icon
-                //onPress={() => navigation.navigate('DrawerOpen')}
-                name='menu'
-                //type='ionicon'
-                color='black'
-            />
-            </TouchableOpacity>
-        </View>
-    )
   });
 
    constructor(props) {
@@ -62,15 +50,23 @@ class MyHomeScreen extends React.Component {
     }
   }
 
-
   render() {
+        var imgURL;
+        var current= new Date();
+        var day_night=current.getHours();
+        if (day_night<=12)
+            imgURL = require('../../img/avia1_l.jpg');
+        else 
+            imgURL = require('../../img/avia_wallpaper.png');
+
+        console.log('imgURL: ' + imgURL);
     return (
 
           
         <View style= {styles.container}>
         
          <Image
-          source={require('../../img/avia_wallpaper.png')}
+          source={imgURL}
           style={styles.imgContainer}>
           <View style={styles.parentContainer}>
                
@@ -330,41 +326,12 @@ const HomeStack = StackNavigator({
     //Collapse: {screen: CollapseView},
 },
 )
-
-/**
- * DrawerNavigator is a sidebar functionality that calls the sliding panel.
- * SideBar 'Home' will call HomeStack, a StackNavigator.
- * Announcements to Contact us will be the list of links for user to click. 
- */
-const SideBar = DrawerNavigator({
-    Home: {screen: HomeStack},
-    AboutJTC: {screen: About},
-    Announcement: {screen: Announcement},
-    Food: {screen: FoodBev},
-    Bus: {screen: ShuttleBus},
-    Tenant: {screen: Tenant},
-    SAPMap: {screen: MapSAP},
-    ContactUs: {screen: Contact},
-    Feedback: {screen: Feedback},
-   // Gesture: {screen: SomeFile}, 
-   // Collapse: {screen: CollapseView},
- }, 
-
-{
-//   initialRouteName: 'Drafts',
-   contentOptions: {
-     activeTintColor: '#e91e63',
-   },
-  
- }
-);
-
 HomeStack.navigationOptions = {
     headerStyle: {
         backgroundColor: '#ff6666'
     }
 }
-export default SideBar;
+export default HomeStack;
 
 
 

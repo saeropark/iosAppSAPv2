@@ -225,13 +225,14 @@ class PromoDetail extends React.Component {
 }
 
 const PromoStack = StackNavigator( {
-  List: {screen: PromoList},
-  Info: {screen: PromoDetail}
+    List: {screen: PromoList},
+    Info: {screen: PromoDetail}
 })
 const FoodTab = TabNavigator({
-  Oval: { screen: OvalTab },
-  Directory: { screen: DirectoryTab },
-  Promotion: { screen: PromoStack}
+    Promotion: { screen: PromoStack},
+    Oval: { screen: OvalTab },
+    Directory: { screen: DirectoryTab },
+  
 },
     { mode: 'modal', // this is needed to make sure header is hidden on ios
         tabBarOptions: {

@@ -4,7 +4,7 @@ import {
     StyleSheet,
     View,
     Text,
-    ScrollView, Picker
+    ScrollView, Picker, Platform, PickerIOS
 } from 'react-native';
 
 import PhotoView from 'react-native-photo-view';
@@ -37,21 +37,22 @@ export default class SAPMap extends Component {
         var type = CONTENT[this.state.mapType];
         console.log( "content type:" + type.title);
         console.log( "url link:" + type.url);
-        
+        var PickerType = (Platform.OS === 'android')? Picker: PickeriOS;
         //--- mapValue reads picker.item value.
         return(
 
             <View style={{flex:1}}>
                 <Text>Please choose a map view:</Text>
-            <Picker
+            <PickerType
                 selectedValue={this.state.mapType}
                 onValueChange={(mapValue) => this.setState({mapType: mapValue})}>
-                    <Picker.Item label = "Lunch" value = "lunchRoute" />
-                    <Picker.Item label = "Bus Stop" value = "busStop" />
-                    <Picker.Item label = "Overview" value = "overview" />
-                </Picker>
+                    <PickerType.Item label = "Overview" value = "overview" />
+                    <PickerType.Item label = "Lunch" value = "lunchRoute" />
+                    <PickerType.Item label = "Bus Stop" value = "busStop" />
+                    
+                </PickerType>
                 
-                 <PhotoView
+                <PhotoView
                     source={{uri: type.url}}
                     minimumZoomScale={1}
                     maximumZoomScale={10}
@@ -61,6 +62,7 @@ export default class SAPMap extends Component {
         )
     }
 }
+
 var styles = StyleSheet.create({
     pdf: {
         flex:1
