@@ -63,7 +63,7 @@ class MyHomeScreen extends React.Component {
             imgURL = require('../../img/avia2.jpg');
         else if (day_night<=11 && day_night<14)
             imgURL = require('../../img/oval4.jpg');
-        else if (day_night<=14 && day_night<17)
+        else if (day_night<=15 && day_night<17)
             imgURL = require('../../img/img3.jpg');
         else if (day_night<=17 && day_night<19)
             imgURL = require('../../img/img5.jpg');
@@ -210,15 +210,16 @@ class HandlerOne extends Component{
       //<Text style={styles.handlerText}>Slide to pull up</Text> 
     return (
 
-        <View style={styles.textContainer}>
+        <Animatable.View animation="pulse" easing="ease-out" iterationCount="infinite" style={styles.textContainer}>
              {/*<Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>*/}
                  <Icon
+                
                     name={(height === MAXIMUM_HEIGHT) ?'keyboard-arrow-down': 'airplanemode-active'}
                     color= '#fff'//color='#517fa4'
                     />
             {/*</Animatable.Text>*/}
              <Text style={{color: 'white', textAlign: 'center'}}> Slide up to begin</Text>
-     </View>
+     </Animatable.View>
     );
   }
 };
