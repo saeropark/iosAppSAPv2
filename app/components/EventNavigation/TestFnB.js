@@ -9,8 +9,8 @@ import {
   TouchableHighlight,
   Dimensions
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import { TabNavigator } from "react-navigation";
+import { StackNavigator, TabNavigator } from 'react-navigation';
+import Spinner from 'react-native-spinner-overlay';
 import {Icon, Button, Tile} from "react-native-elements";
 
 import AboutOval from '../../js/AnnouncementLists/AboutOval';
@@ -55,7 +55,8 @@ class PromoList extends React.Component {
     const navigate = this.props.navigation;
     //const { navigate } = this.props.navigation;
     this.state = {
-        isLoading: true, 
+        isLoading: true,
+        visible: true,
         //dataSource is the interface
         dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2)=> row1 !== row2
@@ -76,7 +77,8 @@ class PromoList extends React.Component {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(responseData.Promotion),
                 //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
-                isLoading: false
+                isLoading: false,
+                visible: false,
             });
         })
         .done();
@@ -84,11 +86,14 @@ class PromoList extends React.Component {
     render() {
       //const { navigate } = this.props.navigation;
         return (
-            <ListView
-                dataSource = {this.state.dataSource}
-                renderRow = {this.renderPromotion.bind(this)}
-                style = {styles.listView}
-            />
+            <View style={{flex:1}}>
+                <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+                <ListView
+                    dataSource = {this.state.dataSource}
+                    renderRow = {this.renderPromotion.bind(this)}
+                    style = {styles.listView}
+                />
+            </View>
         );
     }
 

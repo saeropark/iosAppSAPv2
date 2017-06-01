@@ -13,14 +13,10 @@ import {
   ScrollView,TouchableHighlight,
   ActivityIndicator
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import { TabNavigator } from "react-navigation";
-
-
+import { StackNavigator, TabNavigator } from 'react-navigation';
 import * as Animatable from 'react-native-animatable';
 import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
-
 import MapView from 'react-native-maps';
 import {Button, Icon} from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -209,7 +205,7 @@ class PMList extends React.Component {
         super(props);
         
         this.state = {
-            visible: false,
+            visible: true,
             animating: true,
             isLoading: true, 
             //dataSource is the interface
@@ -234,7 +230,8 @@ class PMList extends React.Component {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(responseData),
                 //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
-                isLoading: false
+                isLoading: false,
+                visible: false,
             });
         })
         .done();
@@ -242,7 +239,8 @@ class PMList extends React.Component {
     render() {
         return (
           <View style={styles.mainContainer}>
-            {/*<NavBar />*/}
+            
+            <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
             <ListView
                 dataSource = {this.state.dataSource}
                 renderRow = {this.renderBus.bind(this)}
@@ -329,7 +327,7 @@ class LunchList extends React.Component {
         super(props);
         
         this.state = {
-            visible: false,
+            visible: true,
             animating: true,
             isLoading: true, 
             //dataSource is the interface
@@ -354,7 +352,8 @@ class LunchList extends React.Component {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(responseData),
                 //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
-                isLoading: false
+                isLoading: false,
+                visible: false
             });
         })
         .done();
@@ -362,7 +361,7 @@ class LunchList extends React.Component {
     render() {
         return (
           <View style={styles.mainContainer}>
-            {/*<NavBar />*/}
+            <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
             <ListView
                 dataSource = {this.state.dataSource}
                 renderRow = {this.renderBus.bind(this)}
