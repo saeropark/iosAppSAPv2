@@ -181,14 +181,12 @@ class PromoDetail extends React.Component {
             console.log("Event info page");
             console.log(params);
         var imgURL;
-        var imgAvail = (params.event.fileURL).toString();
-        console.log ('is it available? ' + imgAvail);
-        if (params.event.fileURL === 'undefined' )
+        if (params.event.fileURL ==='undefined' )
             imgURL = {uri:'../../../img/SAP.png'};
         else
             imgURL = {uri:params.event.fileURL};
         
-        console.log('avail: ' + imgAvail);
+        console.log('avail: ' + imgURL);
         return (
             
             <View style={styles.container}>

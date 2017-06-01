@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { StackNavigator, navigate } from 'react-navigation';
 import { TabNavigator } from "react-navigation";
-import {Icon, Button} from "react-native-elements";
+import {Icon, Button, Tile} from "react-native-elements";
 import Spinner from 'react-native-loading-spinner-overlay';
 
 var REQUEST_URL = 'https://asap-c4472.firebaseio.com/.json';
@@ -113,12 +113,13 @@ class EventList extends React.Component {
                 <View>
                     <View style = {styles.container}>
                        <View style={styles.dateColumn}>
-                            <View style={{backgroundColor: '#b510d3', flex:0.2}}>
-                                <Text style={styles.calDate}> {event.date.split("/")[1]} </Text>
-                            </View>
-                            <View style={{backgroundColor: 'white', flex:0.2}}>
+                           <View style={{backgroundColor: '#b510d3', flex:0.1}}>
                                 <Text style={styles.calMonth}> { this.getMonth(event.date.split("/")[0]) } </Text>
                             </View>
+                            <View style={{backgroundColor: 'white', flex:0.2}}>
+                                <Text style={styles.calDate}> {event.date.split("/")[1]} </Text>
+                            </View>
+                            
                         </View>
                    
                         <View style = {styles.rightContainer}>
@@ -298,11 +299,12 @@ class PastList extends React.Component {
                 <View>
                     <View style = {styles.container}>
                        <View style={styles.dateColumn}>
+                            
                             <View style={{backgroundColor: '#b510d3', flex:0.2}}>
-                                <Text style={styles.calDate}> {event.date.split("/")[1]} </Text>
+                                <Text style={styles.calMonth}> { this.getMonth(event.date.split("/")[0]) } </Text>
                             </View>
                             <View style={{backgroundColor: 'white', flex:0.2}}>
-                                <Text style={styles.calMonth}> { this.getMonth(event.date.split("/")[0]) } </Text>
+                                <Text style={styles.calDate}> {event.date.split("/")[1]} </Text>
                             </View>
                         </View>
                    
@@ -430,6 +432,7 @@ class NewPastList extends React.Component {
     //const { navigate } = this.props.navigation;
     this.state = {
         isLoading: true, 
+        visible: true,
         //dataSource is the interface
         dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2)=> row1 !== row2
@@ -450,7 +453,8 @@ class NewPastList extends React.Component {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.sortObjects(responseData)),
                 //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
-                isLoading: false
+                isLoading: false,
+                visible: false,
             });
         })
         .done();
@@ -458,31 +462,52 @@ class NewPastList extends React.Component {
     render() {
       //const { navigate } = this.props.navigation;
         return (
-            <ListView
-                dataSource = {this.state.dataSource}
-                renderRow = {this.renderEvent.bind(this)}
-                style = {styles.listView}
-            />
+            <View style={styles.mainContainer}>
+                <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+                <ListView
+                    dataSource = {this.state.dataSource}
+                    renderRow = {this.renderEvent.bind(this)}
+                    style = {styles.listView}
+                />
+            </View>
         );
     }
 
 
     renderEvent(event) {
+
+        var imgURL;
+        var link = event.fileURL;
+        console.log('undefined? '+ event.fileURL);
+        if (event.fileURL)
+            imgURL = {uri: event.fileURL};
+        else
+            imgURL = {uri: './jtc.jpg'};
+        
+        console.log('avail: ' + imgURL);
+
         return (
            <TouchableHighlight 
                 onPress={() => this.testOnPress(event)}>
                 <View>
                     <View style = {styles.container}>
-                        <Image
-                            source={require(event.fileURL)}
-                            />
-                             <View style={{backgroundColor: (event.postType === 'Announcement')? '#ff8080':'#99ffbb',width: 100}}>
+                        <Tile
+                                onPress={()=>this.testOnPress(event)}
+                                onLongPress={()=> this.testOnPress(event)}
+                                imageSrc={{uri: (event.fileURL)? event.fileURL: './jtc.jpg'}}
+                                featured
+                                title={event.title}
+                                //imageContainerStyle={{color: 'transparent'}}
+                                //icon={{name: 'play-circle', type: 'font-awesome'}}  // optional
+                                //contentContainerStyle={{height: 70}}
+                                />
+                             {/*<View style={{backgroundColor: (event.postType === 'Announcement')? '#ff8080':'#99ffbb',width: 100}}>
                                 <Text style = {styles.postType}> {event.postType} </Text>
                             </View>
-                            <Text style = {styles.title}> {event.title}</Text>
+                            <Text style = {styles.title}> {event.title}</Text>*/}
                         </View>
                   
-                    <View style = {styles.separator}/>
+                
                 </View>
             </TouchableHighlight>
         );
@@ -604,6 +629,13 @@ class EventDetail extends React.Component {
             console.log("Event info page");
             console.log(params);
 
+        var imgURL;
+        if (params.event.fileURL === '' )
+            imgURL = {uri:'../../../img/SAP.png'};
+        else 
+            imgURL = {uri:params.event.fileURL};
+        
+        console.log('avail: ' + imgURL);
         return (
             
             <View style={styles.container}>
@@ -611,7 +643,7 @@ class EventDetail extends React.Component {
                 <View style={styles.contentContainer}>
                         <Image
                             style={{width: 300, height: 200}}
-                            source={{uri: (params.event.fileURL === "")? '../../img/SAP.png' : params.event.fileURL}}
+                            source={imgURL}
                         />
                     </View>
                         
@@ -650,7 +682,10 @@ class EventDetail extends React.Component {
     }
 }
 
-
+const NewPastStack = StackNavigator({
+    NPList: {screen: NewPastList},
+    Info: {screen: EventDetail}
+})
     
 const PastStack = StackNavigator({
     PList: {screen: PastList},
@@ -682,7 +717,8 @@ const AnnStack = StackNavigator({
 
 const EventTab = TabNavigator({
     Upcoming: { screen: AnnStack },
-    Past: { screen: PastStack },
+    //Past: { screen: PastStack },
+    NewPast : {screen: NewPastStack},
 },
     { 
         mode: 'modal',  // this is needed to make sure header is hidden on ios
@@ -781,12 +817,12 @@ var styles = StyleSheet.create ({
         textAlign: 'center'
     },
     calDate: {
-        color:'white', 
+        color:'#b510d3', 
         textAlign:'center',
-        fontSize: 24
+        fontSize: 30
     },
     calMonth: {
-        color: '#b51d03', 
+        color: 'white', 
         textAlign: 'center',
         fontSize: 14
     },
