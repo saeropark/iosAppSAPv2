@@ -40,7 +40,7 @@ class MyHomeScreen extends React.Component {
     headerTitle: 'Seletar Aerospace Park',
    
     headerTitleStyle: {
-        fontFamily: 'Insignia LT Std Roman'
+        //fontFamily: 'Insignia LT Std Roman'
     },
   });
 
