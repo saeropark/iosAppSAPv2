@@ -62,13 +62,13 @@ class MyHomeScreen extends React.Component {
         else if (day_night<=9 && day_night<11)
             imgURL = require('../../img/avia2.jpg');
         else if (day_night<=11 && day_night<14)
-            imgURL = require('../../img/img3.jpg');
-        else if (day_night<=14 && day_night<17)
             imgURL = require('../../img/oval4.jpg');
+        else if (day_night<=14 && day_night<17)
+            imgURL = require('../../img/img3.jpg');
         else if (day_night<=17 && day_night<19)
             imgURL = require('../../img/img5.jpg');
         else 
-            imgURL = require('../../img/img1.png');
+            imgURL = require('../../img/img1.jpg');
 
         console.log('imgURL: ' + imgURL);
     return (
@@ -83,6 +83,8 @@ class MyHomeScreen extends React.Component {
                
                 <SlidingUpPanel 
                     ref={panel => { this.panel = panel; }}
+                    containerBackgroundColor={'rgba(0,0,0,0.5)'}
+                    handlerBackgroundColor={'rgba(0,0,0,0.5)'}
                     containerMaximumHeight={MAXIMUM_HEIGHT}
                     handlerHeight={MINUMUM_HEIGHT}
                     allowStayMiddle={false}

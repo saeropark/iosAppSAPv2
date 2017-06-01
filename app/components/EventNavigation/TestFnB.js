@@ -10,7 +10,7 @@ import {
   Dimensions
 } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
-import Spinner from 'react-native-spinner-overlay';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {Icon, Button, Tile} from "react-native-elements";
 
 import AboutOval from '../../js/AnnouncementLists/AboutOval';
