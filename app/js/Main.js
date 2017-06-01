@@ -54,11 +54,21 @@ class MyHomeScreen extends React.Component {
   render() {
         var imgURL;
         var current= new Date();
-        var day_night=current.getHours();
-        if (day_night<=12)
+        var day_night = current.getHours();
+        console.log('number:'+ day_night);
+
+        if (day_night <=7 && day_night<9 )
             imgURL = require('../../img/avia1_l.jpg');
+        else if (day_night<=9 && day_night<11)
+            imgURL = require('../../img/avia2.jpg');
+        else if (day_night<=11 && day_night<14)
+            imgURL = require('../../img/img3.jpg');
+        else if (day_night<=14 && day_night<17)
+            imgURL = require('../../img/oval4.jpg');
+        else if (day_night<=17 && day_night<19)
+            imgURL = require('../../img/img5.jpg');
         else 
-            imgURL = require('../../img/avia_wallpaper.png');
+            imgURL = require('../../img/img1.png');
 
         console.log('imgURL: ' + imgURL);
     return (
