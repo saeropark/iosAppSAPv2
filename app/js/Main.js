@@ -31,7 +31,7 @@ import RouteStack from '../components/BusRouteNavigation/TestBusRoute';
 var deviceHeight = Dimensions.get('window').height;
 var deviceWidth = Dimensions.get('window').width;
 
-var MAXIMUM_HEIGHT = (deviceHeight - 100 )/2;
+var MAXIMUM_HEIGHT = (deviceHeight - 100 )/3;
 var MINUMUM_HEIGHT = 50;
 //======== SCREEN ON LOAD ===========
 class MyHomeScreen extends React.Component {
@@ -103,6 +103,7 @@ class MyHomeScreen extends React.Component {
                             <Icon
                                 reverse
                                 name='event'
+                                size={50}
                                 //type='ionicon'
                                 color='#ffcc00'
                                 onPress={() => this.props.navigation.navigate('Announcement')}
@@ -114,6 +115,7 @@ class MyHomeScreen extends React.Component {
                             
                             <Icon
                                 reverse
+                                size={50}
                                 name='local-dining'
                                 //type='ionicon'
                                 color='red'
@@ -124,6 +126,7 @@ class MyHomeScreen extends React.Component {
                             <View style={styles.iconContainer}>
                             <Icon
                                 reverse
+                                size={50}
                                 name='directions-bus'
                                 //type='ionicon'
                                 color= '#b510d3'//color='#517fa4'
@@ -135,6 +138,7 @@ class MyHomeScreen extends React.Component {
                              <View style={styles.iconContainer}>
                             <Icon
                                 reverse
+                                size={50}
                                 name='import-contacts'
                                 //type='ionicon'
                                 color= '#b510d3'//color='#517fa4'
@@ -145,6 +149,7 @@ class MyHomeScreen extends React.Component {
                              <View style={styles.iconContainer}>
                             <Icon
                                 reverse
+                                size={50}
                                 name='map'
                                 //type='ionicon'
                                 color= 'pink'//color='#517fa4'
@@ -155,6 +160,7 @@ class MyHomeScreen extends React.Component {
                             <View style={styles.iconContainer}>
                             <Icon
                                 reverse
+                                size={50}
                                 name='contact-phone'
                                 //type='ionicon'
                                 color= '#b510d3'//color='#517fa4'
@@ -165,6 +171,7 @@ class MyHomeScreen extends React.Component {
                              <View style={styles.iconContainer}>
                             <Icon
                                 reverse
+                                size={50}
                                 name='email'
                                 //type='ionicon'
                                 color= 'orange'//color='#517fa4'
