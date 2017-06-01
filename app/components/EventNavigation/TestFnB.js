@@ -122,7 +122,7 @@ class PromoList extends React.Component {
                     <View style = {styles.container}>
                             <View style={styles.dateColumn}>
                             <Tile
-                                featured
+                                
                                 onPress={()=>this.testOnPress(event)}
                                 onLongPress={()=> this.testOnPress(event)}
                                 imageSrc={{uri: (event.fileURL)}}
@@ -183,10 +183,10 @@ class PromoDetail extends React.Component {
         var imgURL;
         var imgAvail = (params.event.fileURL).toString();
         console.log ('is it available? ' + imgAvail);
-        if (imgAvail != 'undefined' )
-            imgURL = require(imgAvail);
+        if (params.event.fileURL === 'undefined' )
+            imgURL = {uri:'../../../img/SAP.png'};
         else
-            imgURL = require('../../../img/SAP.png');
+            imgURL = {uri:params.event.fileURL};
         
         console.log('avail: ' + imgAvail);
         return (
