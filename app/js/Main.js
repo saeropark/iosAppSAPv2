@@ -16,6 +16,7 @@ import {
 import { StackNavigator, DrawerNavigator} from 'react-navigation';
 import { Icon , Button} from 'react-native-elements';
 import SlidingUpPanel from 'react-native-sliding-up-panel';
+import * as Animatable from 'react-native-animatable';
 
 import ContactUs from './SidebarList/ContactUs';
 import AboutJTC from './SidebarList/AboutJTC';
@@ -23,7 +24,6 @@ import TenantDirectory from './SidebarList/TenantDirectory';
 import SAPMap from './SidebarList/SAPMap';
 import TestDir from './AnnouncementLists/TestDir';
 import SendFeedback from './SidebarList/SendFeedback';
-
 import FoodStack from '../components/EventNavigation/TestFnB';
 import EventStack from '../components/AnnouncementNavigation/TestEventAnn';
 import RouteStack from '../components/BusRouteNavigation/TestBusRoute';
@@ -103,7 +103,7 @@ class MyHomeScreen extends React.Component {
                             <Icon
                                 reverse
                                 name='event'
-                                size={50}
+                                size={45}
                                 //type='ionicon'
                                 color='#ffcc00'
                                 onPress={() => this.props.navigation.navigate('Announcement')}
@@ -115,7 +115,7 @@ class MyHomeScreen extends React.Component {
                             
                             <Icon
                                 reverse
-                                size={50}
+                                size={45}
                                 name='local-dining'
                                 //type='ionicon'
                                 color='red'
@@ -126,7 +126,7 @@ class MyHomeScreen extends React.Component {
                             <View style={styles.iconContainer}>
                             <Icon
                                 reverse
-                                size={50}
+                                size={45}
                                 name='directions-bus'
                                 //type='ionicon'
                                 color= '#b510d3'//color='#517fa4'
@@ -138,7 +138,7 @@ class MyHomeScreen extends React.Component {
                              <View style={styles.iconContainer}>
                             <Icon
                                 reverse
-                                size={50}
+                                size={45}
                                 name='import-contacts'
                                 //type='ionicon'
                                 color= '#b510d3'//color='#517fa4'
@@ -149,7 +149,7 @@ class MyHomeScreen extends React.Component {
                              <View style={styles.iconContainer}>
                             <Icon
                                 reverse
-                                size={50}
+                                size={45}
                                 name='map'
                                 //type='ionicon'
                                 color= 'pink'//color='#517fa4'
@@ -160,7 +160,7 @@ class MyHomeScreen extends React.Component {
                             <View style={styles.iconContainer}>
                             <Icon
                                 reverse
-                                size={50}
+                                size={45}
                                 name='contact-phone'
                                 //type='ionicon'
                                 color= '#b510d3'//color='#517fa4'
@@ -171,7 +171,7 @@ class MyHomeScreen extends React.Component {
                              <View style={styles.iconContainer}>
                             <Icon
                                 reverse
-                                size={50}
+                                size={45}
                                 name='email'
                                 //type='ionicon'
                                 color= 'orange'//color='#517fa4'
@@ -211,11 +211,12 @@ class HandlerOne extends Component{
     return (
 
         <View style={styles.textContainer}>
-             <Icon
-             
-            name={(height === MAXIMUM_HEIGHT) ?'keyboard-arrow-down': 'airplanemode-active'}
-            color= '#fff'//color='#517fa4'
-            />
+             {/*<Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>*/}
+                 <Icon
+                    name={(height === MAXIMUM_HEIGHT) ?'keyboard-arrow-down': 'airplanemode-active'}
+                    color= '#fff'//color='#517fa4'
+                    />
+            {/*</Animatable.Text>*/}
              <Text style={{color: 'white', textAlign: 'center'}}> Slide up to begin</Text>
      </View>
     );
