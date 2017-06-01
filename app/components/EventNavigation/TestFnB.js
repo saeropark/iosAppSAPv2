@@ -175,7 +175,15 @@ class PromoDetail extends React.Component {
         const {goBack} = this.props.navigation;
             console.log("Event info page");
             console.log(params);
-
+        var imgURL;
+        var imgAvail = (params.event.fileURL).toString();
+        console.log ('is it available? ' + imgAvail);
+        if (imgAvail != 'undefined' )
+            imgURL = require(imgAvail);
+        else
+            imgURL = require('../../../img/SAP.png');
+        
+        console.log('avail: ' + imgAvail);
         return (
             
             <View style={styles.container}>
@@ -184,7 +192,8 @@ class PromoDetail extends React.Component {
                        <Image
                             style={{flex:1, width: undefined, height: deviceHeight, }}
                             resizeMode='contain'
-                            source={{uri: (params.event.fileURL === "")? '../../img/SAP.png' : params.event.fileURL}}
+                            source={imgURL}
+                            //source={{uri: (params.event.fileURL === "")? '../../img/SAP.png' : params.event.fileURL}}
                         />
                     </View>
                         

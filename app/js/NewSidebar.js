@@ -37,8 +37,11 @@ var MINUMUM_HEIGHT = 50;
 class MyHomeScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
 
-    title: 'Seletar Aerospace Park',
+    headerTitle: 'Seletar Aerospace Park',
     drawerLabel: 'Home',
+    headerTitleStyle : {
+        fontFamily: 'Calibri Light'
+    },
     headerStyle: {
     },
     headerLeft: (
@@ -63,17 +66,60 @@ class MyHomeScreen extends React.Component {
   }
 
 
+//   onSwipeUp(gestureState) {
+//     this.setState({myText: 'You swiped up!'});
+//   }
+ 
+//   onSwipeDown(gestureState) {
+//     this.setState({myText: 'You swiped down!'});
+//   }
+ 
+//   onSwipeLeft(gestureState) {
+//     this.setState({myText: 'You swiped left!'});
+//   }
+ 
+//   onSwipeRight(gestureState) {
+//     this.setState({myText: 'You swiped right!'});
+//   }
+ 
+//   onSwipe(gestureName, gestureState) {
+//     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+//     this.setState({gestureName: gestureName});
+//     switch (gestureName) {
+//       case SWIPE_UP:
+//         this.setState({backgroundColor: 'red'});
+//         break;
+//       case SWIPE_DOWN:
+//         this.setState({backgroundColor: 'green'});
+//         break;
+//     }
+//   }
+ 
   render() {
-    return (
 
-          
+    // const config = {
+    //   velocityThreshold: 0.3,
+    //   directionalOffsetThreshold: 80
+    // };
+ 
+    return (
         <View style= {styles.container}>
-        
          <Image
           source={require('../../img/avia_wallpaper.png')}
           style={styles.imgContainer}>
           <View style={styles.parentContainer}>
-               
+               {/*<GestureRecognizer
+                    onSwipe={(direction, state) => this.onSwipe(direction, state)}
+                    onSwipeUp={(state) => this.onSwipeUp(state)}
+                    onSwipeDown={(state) => this.onSwipeDown(state)}
+                    config={config}
+                    style={{
+                    flex: 1,
+                    backgroundColor: this.state.backgroundColor
+                     }}
+                >*/}
+       
+
                 <SlidingUpPanel 
                     ref={panel => { this.panel = panel; }}
                     containerMaximumHeight={MAXIMUM_HEIGHT}
@@ -170,6 +216,8 @@ class MyHomeScreen extends React.Component {
                         
                        
                 </SlidingUpPanel>
+
+                    {/*</GestureRecognizer>*/}
             </View>
         
       </Image>
@@ -195,12 +243,15 @@ class HandlerOne extends Component{
     return (
 
         <View style={styles.textContainer}>
+             <Text style={{color:'white'}}>Slide up to begin</Text>
              <Icon
              
             name={(height === MAXIMUM_HEIGHT) ?'keyboard-arrow-down': 'airplanemode-active'}
             color= '#fff'//color='#517fa4'
             />
-             
+           
+                
+         
      </View>
     );
   }

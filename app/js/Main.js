@@ -37,9 +37,10 @@ var MINUMUM_HEIGHT = 50;
 class MyHomeScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
 
-    title: 'Seletar Aerospace Park',
+    headerTitle: 'Seletar Aerospace Park',
    
-    headerStyle: {
+    headerTitleStyle: {
+        fontFamily: 'Insignia LT Std Roman'
     },
   });
 
@@ -196,7 +197,7 @@ class HandlerOne extends Component{
             name={(height === MAXIMUM_HEIGHT) ?'keyboard-arrow-down': 'airplanemode-active'}
             color= '#fff'//color='#517fa4'
             />
-             
+             <Text style={{color: 'white', textAlign: 'center'}}> Slide up to begin</Text>
      </View>
     );
   }
