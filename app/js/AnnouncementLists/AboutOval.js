@@ -19,7 +19,7 @@ export default class AboutOval extends Component {
           <ScrollView>
             <Tile
                 imageSrc={img}
-                title="Seletar Aerospace Park"
+                //title="Seletar Aerospace Park"
                 featured
                 contentContainerStyle={{height: 70}}
                 //icon= {{ name:'ios-american-football', type:'ionicon',color:'#517fa4'}}

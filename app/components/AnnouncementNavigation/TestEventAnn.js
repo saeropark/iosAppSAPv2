@@ -11,7 +11,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TouchableHighlight,
-  Alert
+  Alert,
+  NetInfo
 } from 'react-native';
 import { StackNavigator, navigate } from 'react-navigation';
 import { TabNavigator } from "react-navigation";
@@ -21,6 +22,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 var REQUEST_URL = 'https://asap-c4472.firebaseio.com/.json';
 var event;
 var someText;
+
+import img from '../../../img/SAP.png';
 //========= MAIN TABS: UPCOMING | PAST =============
 class UpcomingTab extends React.Component {
     static navigationOptions = {
@@ -51,30 +54,73 @@ class NewPastTab extends React.Component {
 
 //======= UNDER UPCOMING TABS ==============
 class EventList extends React.Component {
+
+//       state = {
+//     connectionInfo: null,
+//   };
+
+//   componentDidMount() {
+//     NetInfo.addEventListener(
+//         'change',
+//         this._handleConnectionInfoChange
+//     );
+//     NetInfo.fetch().done(
+//         (connectionInfo) => { this.setState({connectionInfo}); }
+//     );
+//   }
+
+    constructor(props) {
+        super(props);
+        const navigate = this.props.navigation;
+        //const { navigate } = this.props.navigation;
+        this.state = {
+            connectionInfo: null,
+            isLoading: true, 
+            visible: true,
+            //dataSource is the interface
+            dataSource: new ListView.DataSource({
+            rowHasChanged: (row1, row2)=> row1 !== row2
+            })
+        };
+    }
+
+    componentDidMount() {
+        NetInfo.addEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
+        NetInfo.fetch().done(
+            (connectionInfo) => { this.setState({connectionInfo});
+                                    this.fetchData(); }
+        );
+    }
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener(
+        'change',
+        this._handleConnectionInfoChange
+    );
+  }
+
+  _handleConnectionInfoChange = (connectionInfo) => {
+    this.setState({
+      connectionInfo,
+    });
+    console.log(this.state.connectionInfo);
+  };
+
     static navigationOptions = ({ navigation }) => ({
      header: null,
     });
 
-    constructor(props) {
-    super(props);
-    const navigate = this.props.navigation;
-    //const { navigate } = this.props.navigation;
-    this.state = {
-        isLoading: true, 
-        visible: true,
-        //dataSource is the interface
-        dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2)=> row1 !== row2
-        })
-    };
-    }
 
-    componentDidMount() {
-        this.fetchData();
-    }
+
 
     // --- calls Google API ---
     fetchData() {
+        console.log("Line 122: " + this.state.connectionInfo);
+
+        //if (this.state.connectionInfo)
         fetch(REQUEST_URL)
         .then((response) => response.json())
         .then((responseData) => {
@@ -87,15 +133,19 @@ class EventList extends React.Component {
             });
         }).catch((error) => {
             console.error(error);
-            Alert.alert('Unable to connect to the internet. Please check your connectivity!');
+            if (this.state.connectionInfo === 'NONE')
+                Alert.alert('Unable to connect to the internet. Please check your connectivity!');
+            else
+                console.error("Please contact admin.");
         })
         .done();
     }
     render() {
       //const { navigate } = this.props.navigation;
         return (
-            <View style={styles.mainContainer}>
+            <View style={{flex:1,}}>
                 <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+               
                 <ListView
                     dataSource = {this.state.dataSource}
                     renderRow = {this.renderEvent.bind(this)}
@@ -462,8 +512,9 @@ class NewPastList extends React.Component {
     render() {
       //const { navigate } = this.props.navigation;
         return (
-            <View style={styles.mainContainer}>
+            <View style={styles.listView}>
                 <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+                
                 <ListView
                     dataSource = {this.state.dataSource}
                     renderRow = {this.renderEvent.bind(this)}
@@ -480,36 +531,35 @@ class NewPastList extends React.Component {
         var link = event.fileURL;
         console.log('undefined? '+ event.fileURL);
         if (event.fileURL)
-            imgURL = {uri: event.fileURL};
+            imgURL = {uri:event.fileURL};
         else
-            imgURL = {uri: './jtc.jpg'};
+            imgURL = img;
         
         console.log('avail: ' + imgURL);
 
         return (
-           <TouchableHighlight 
-                onPress={() => this.testOnPress(event)}>
                 <View>
-                    <View style = {styles.container}>
+                    <View style = {{flexDirection:'column', flex:1}}>
                         <Tile
                                 onPress={()=>this.testOnPress(event)}
                                 onLongPress={()=> this.testOnPress(event)}
-                                imageSrc={{uri: (event.fileURL)? event.fileURL: './jtc.jpg'}}
-                                featured
+                                imageSrc={imgURL}
+                                containerStyle={{paddingBottom:-10,}}
+                                //featured
                                 title={event.title}
+                                titleStyle={{position:'absolute'}}
                                 //imageContainerStyle={{color: 'transparent'}}
                                 //icon={{name: 'play-circle', type: 'font-awesome'}}  // optional
                                 //contentContainerStyle={{height: 70}}
                                 />
                              {/*<View style={{backgroundColor: (event.postType === 'Announcement')? '#ff8080':'#99ffbb',width: 100}}>
                                 <Text style = {styles.postType}> {event.postType} </Text>
-                            </View>
-                            <Text style = {styles.title}> {event.title}</Text>*/}
+                            </View>*/}
+                            {/*<Text style = {styles.title}> {event.title}</Text>*/}
                         </View>
                   
                 
                 </View>
-            </TouchableHighlight>
         );
     }
 
@@ -717,7 +767,7 @@ const AnnStack = StackNavigator({
 
 const EventTab = TabNavigator({
     Upcoming: { screen: AnnStack },
-    //Past: { screen: PastStack },
+    Past: { screen: PastStack },
     NewPast : {screen: NewPastStack},
 },
     { 
@@ -778,8 +828,8 @@ var styles = StyleSheet.create ({
         padding: 5,
     },
     title: {
-        fontSize: 20,
-        paddingBottom: 8,
+        fontSize: 24,
+        paddingTop: -20,
         color: '#b510d3',
     },
     author: {

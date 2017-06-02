@@ -11,7 +11,8 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   Dimensions,
-  ScrollView
+  ScrollView,
+  NetInfo
 } from 'react-native';
 import { StackNavigator, DrawerNavigator} from 'react-navigation';
 import { Icon , Button} from 'react-native-elements';
@@ -35,6 +36,35 @@ var MAXIMUM_HEIGHT = (deviceHeight - 100 )/3;
 var MINUMUM_HEIGHT = 50;
 //======== SCREEN ON LOAD ===========
 class MyHomeScreen extends React.Component {
+
+state = {
+    connectionInfo: null,
+  };
+
+  componentDidMount() {
+    NetInfo.addEventListener(
+        'change',
+        this._handleConnectionInfoChange
+    );
+    NetInfo.fetch().done(
+        (connectionInfo) => { this.setState({connectionInfo}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener(
+        'change',
+        this._handleConnectionInfoChange
+    );
+  }
+
+  _handleConnectionInfoChange = (connectionInfo) => {
+    this.setState({
+      connectionInfo,
+    });
+    console.log(this.state.connectionInfo);
+  };
+
   static navigationOptions = ({navigation}) => ({
 
     headerTitle: 'Seletar Aerospace Park',
@@ -141,7 +171,7 @@ class MyHomeScreen extends React.Component {
                                 size={45}
                                 name='import-contacts'
                                 //type='ionicon'
-                                color= '#b510d3'//color='#517fa4'
+                                color= 'teal'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('TenantDirectory')}
                                 />
                                 <Text style={styles.instructions}>Directory</Text>
@@ -152,7 +182,7 @@ class MyHomeScreen extends React.Component {
                                 size={45}
                                 name='map'
                                 //type='ionicon'
-                                color= 'pink'//color='#517fa4'
+                                color= 'deeppink'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('SAPMap')}
                                 />
                                 <Text style={styles.instructions}>Map</Text>
@@ -163,7 +193,7 @@ class MyHomeScreen extends React.Component {
                                 size={45}
                                 name='contact-phone'
                                 //type='ionicon'
-                                color= '#b510d3'//color='#517fa4'
+                                color= 'deepskyblue'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('ContactUs')}
                                 />
                                 <Text style={styles.instructions}>Contact Us</Text>
