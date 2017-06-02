@@ -547,7 +547,7 @@ class NewPastList extends React.Component {
                                 containerStyle={{paddingBottom:-10,}}
                                 //featured
                                 title={event.title}
-                                titleStyle={{position:'absolute'}}
+                                //titleStyle={{position:'absolute'}}
                                 //imageContainerStyle={{color: 'transparent'}}
                                 //icon={{name: 'play-circle', type: 'font-awesome'}}  // optional
                                 //contentContainerStyle={{height: 70}}
