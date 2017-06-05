@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Alert,
-  NetInfo
+  NetInfo, RefreshControl
 } from 'react-native';
 import { StackNavigator, navigate } from 'react-navigation';
 import { TabNavigator } from "react-navigation";
@@ -77,6 +77,7 @@ class EventList extends React.Component {
             connectionInfo: null,
             isLoading: true, 
             visible: true,
+            refreshing: false,
             //dataSource is the interface
             dataSource: new ListView.DataSource({
             rowHasChanged: (row1, row2)=> row1 !== row2
@@ -84,6 +85,10 @@ class EventList extends React.Component {
         };
     }
 
+     _onRefresh() {
+        this.setState({refreshing: true});
+        this.fetchData();
+  }
     componentDidMount() {
         NetInfo.addEventListener(
             'change',
@@ -120,25 +125,36 @@ class EventList extends React.Component {
     fetchData() {
         console.log("Line 122: " + this.state.connectionInfo);
 
-        //if (this.state.connectionInfo)
-        fetch(REQUEST_URL)
-        .then((response) => response.json())
-        .then((responseData) => {
-            //responseData = this.removeDuplicates(responseData);
+        if (this.state.connectionInfo === "NONE"){
+            console.log("No active connection");
+            Alert.alert('Alert Title', "No network found. Please try again.");
             this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.sortObjects(responseData)),
-                //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
+                dataSource: [],
                 isLoading: false,
                 visible: false,
             });
-        }).catch((error) => {
-            console.error(error);
-            if (this.state.connectionInfo === 'NONE')
-                Alert.alert('Unable to connect to the internet. Please check your connectivity!');
-            else
-                console.error("Please contact admin.");
-        })
-        .done();
+        } else {
+            console.log("Active connection");
+            fetch(REQUEST_URL)
+            .then((response) => response.json())
+            .then((responseData) => {
+                //responseData = this.removeDuplicates(responseData);
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.sortObjects(responseData)),
+                    //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
+                    isLoading: false,
+                    visible: false,
+                    refreshing: false,
+                });
+            }).catch((error) => {
+                console.error(error);
+                if (this.state.connectionInfo === 'NONE')
+                    Alert.alert('Unable to connect to the internet. Please check your connectivity!');
+                else
+                    console.error("Please contact admin.");
+            })
+            .done();
+        }
     }
     render() {
       //const { navigate } = this.props.navigation;
@@ -146,11 +162,25 @@ class EventList extends React.Component {
             <View style={{flex:1,}}>
                 <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
                
-                <ListView
-                    dataSource = {this.state.dataSource}
-                    renderRow = {this.renderEvent.bind(this)}
-                    style = {styles.listView}
-                />
+                {/*{this.state.connectionInfo === 'NONE' ? (
+                    <ListView
+                        dataSource = {null}
+                        renderRow = {this.renderEvent.bind(this)}
+                        style = {styles.listView}
+                    />
+                ) : (*/}
+                    <ListView
+                         refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                    />
+                    } 
+                        dataSource = {this.state.dataSource}
+                        renderRow = {this.renderEvent.bind(this)}
+                        style = {styles.listView}
+                    />
+                {/*)}*/}
             </View>
         );
     }
@@ -296,6 +326,7 @@ class PastList extends React.Component {
     const navigate = this.props.navigation;
     //const { navigate } = this.props.navigation;
     this.state = {
+        connectionInfo: null,
         isLoading: true, 
         visible: true,
         //dataSource is the interface
@@ -306,26 +337,59 @@ class PastList extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchData();
+        NetInfo.addEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
+        NetInfo.fetch().done(
+            (connectionInfo) => { this.setState({connectionInfo});
+                                    this.fetchData(); }
+        );
     }
+
+    componentWillUnmount() {
+    NetInfo.removeEventListener(
+        'change',
+        this._handleConnectionInfoChange
+    );
+  }
+
+  _handleConnectionInfoChange = (connectionInfo) => {
+    this.setState({
+      connectionInfo,
+    });
+    console.log(this.state.connectionInfo);
+  };
 
     // --- calls Google API ---
     fetchData() {
-        fetch(REQUEST_URL)
-        .then((response) => response.json())
-        .then((responseData) => {
-            //responseData = this.removeDuplicates(responseData);
+        console.log("Line 346: " + this.state.connectionInfo);
+
+        if (this.state.connectionInfo === "NONE"){
+            // console.log("No active connection");
+            // Alert.alert('Alert Title', "No network found. Please try again.");
             this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.sortObjects(responseData)),
-                //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
+                dataSource: null,
                 isLoading: false,
-                visible: false
+                visible: false,
             });
-        }).catch((error) => {
-            console.error(error);
-            Alert.alert('Unable to connect to the internet. Please check your connectivity!');
-        })
-        .done();
+        } else {
+            fetch(REQUEST_URL)
+            .then((response) => response.json())
+            .then((responseData) => {
+                //responseData = this.removeDuplicates(responseData);
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.sortObjects(responseData)),
+                    //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
+                    isLoading: false,
+                    visible: false
+                });
+            }).catch((error) => {
+                console.error(error);
+                //Alert.alert('Unable to connect to the internet. Please check your connectivity!');
+            })
+            .done();
+        }
     }
     render() {
       //const { navigate } = this.props.navigation;
@@ -481,6 +545,7 @@ class NewPastList extends React.Component {
     const navigate = this.props.navigation;
     //const { navigate } = this.props.navigation;
     this.state = {
+        connectionInfo: null,
         isLoading: true, 
         visible: true,
         //dataSource is the interface
@@ -491,23 +556,56 @@ class NewPastList extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchData();
+        NetInfo.addEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
+        NetInfo.fetch().done(
+            (connectionInfo) => { this.setState({connectionInfo});
+                                    this.fetchData(); }
+        );
     }
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener(
+        'change',
+        this._handleConnectionInfoChange
+    );
+  }
+
+  _handleConnectionInfoChange = (connectionInfo) => {
+    this.setState({
+      connectionInfo,
+    });
+    console.log(this.state.connectionInfo);
+  };
 
     // --- calls Google API ---
     fetchData() {
-        fetch(REQUEST_URL)
-        .then((response) => response.json())
-        .then((responseData) => {
-            //responseData = this.removeDuplicates(responseData);
+        console.log("Line 566: " + this.state.connectionInfo);
+
+        if (this.state.connectionInfo === "NONE"){
+            // console.log("No active connection");
+            // Alert.alert('Alert Title', "No network found. Please try again.");
             this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.sortObjects(responseData)),
-                //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
+                dataSource: null,
                 isLoading: false,
                 visible: false,
             });
-        })
-        .done();
+        } else {
+            fetch(REQUEST_URL)
+            .then((response) => response.json())
+            .then((responseData) => {
+                //responseData = this.removeDuplicates(responseData);
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.sortObjects(responseData)),
+                    //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
+                    isLoading: false,
+                    visible: false,
+                });
+            })
+            .done();
+        }
     }
     render() {
       //const { navigate } = this.props.navigation;

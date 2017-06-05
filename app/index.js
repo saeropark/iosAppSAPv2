@@ -3,11 +3,12 @@ import {AppRegistry, Navigator, StyleSheet, View} from 'react-native';
 
 import NewSideBar from './js/NewSidebar';
 import Main from './js/Main';
+import App from './js/App';
 
 export default class AppSAPv2 extends Component {
     render() {
         return (
-           <Main />
+           <App />
         );
     }
 }

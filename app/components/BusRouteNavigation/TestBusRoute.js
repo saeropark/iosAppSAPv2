@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,TouchableHighlight,
-  ActivityIndicator
+  ActivityIndicator, RefreshControl 
 } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import * as Animatable from 'react-native-animatable';
@@ -81,13 +81,19 @@ class AMList extends React.Component {
         this.state = {
             visible: true,
             animating: true,
-            isLoading: true, 
+            isLoading: true,
+            refreshing: false,
             //dataSource is the interface
             dataSource: new ListView.DataSource({
             rowHasChanged: (row1, row2)=> row1 !== row2
             })
         };
     }
+
+    _onRefresh() {
+    this.setState({refreshing: true});
+    this.fetchData();
+  }
 
     componentDidMount() {
        // setInterval(() => {
@@ -109,6 +115,8 @@ class AMList extends React.Component {
                 //dataSource: this.state.dataSource.cloneWithRows(responseData["items"]),
                 //isLoading: false,
                 visible: false,
+                refreshing: false,
+            
             });
            //  }, 3000);
         })
@@ -121,6 +129,12 @@ class AMList extends React.Component {
                   <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
            
             <ListView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                    />
+                    }
                 dataSource = {this.state.dataSource}
                 renderRow = {this.renderBus.bind(this)}
                 style = {styles.listView}
