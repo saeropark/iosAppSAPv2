@@ -1,14 +1,17 @@
+/**
+ * When running app, index.js will be the root. It will call Main.js  which is the wallpaper + menu
+ */
+
 import React, { Component } from 'react';
 import {AppRegistry, Navigator, StyleSheet, View} from 'react-native';
 
-import NewSideBar from './js/NewSidebar';
+//import NewSideBar from './js/NewSidebar';
 import Main from './js/Main';
-import App from './js/App';
 
 export default class AppSAPv2 extends Component {
     render() {
         return (
-           <App />
+           <Main />
         );
     }
 }

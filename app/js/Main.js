@@ -1,5 +1,9 @@
 /* Example: https://github.com/react-community/react-navigation/blob/master/examples/NavigationPlayground/js/Drawer.js */
-
+/**
+ * MAIN.JS contains classes that are on the homepage. 
+ * Total of 6 images will run every 2hours between 7am to 6.59pm. 7pm - 6.59am is one image. 
+ * Each icon 'navigates' points to the path name under the stack. MUST TALLY!
+ */
 import React, {Component} from 'react';
 import {
   Text,
@@ -23,11 +27,11 @@ import ContactUs from './SidebarList/ContactUs';
 import AboutJTC from './SidebarList/AboutJTC';
 import TenantDirectory from './SidebarList/TenantDirectory';
 import SAPMap from './SidebarList/SAPMap';
-import TestDir from './AnnouncementLists/TestDir';
 import SendFeedback from './SidebarList/SendFeedback';
-import FoodStack from '../components/EventNavigation/TestFnB';
-import EventStack from '../components/AnnouncementNavigation/TestEventAnn';
-import RouteStack from '../components/BusRouteNavigation/TestBusRoute';
+//import FnBDirectory from './FnBComponent/FnBDirectory';
+import FoodStack from './FnBComponent/FnBPromotion';
+import EventStack from './EventComponent/EventAnnouncementList';
+import RouteStack from './ShuttleBusComponent/BusRoute';
 
 var deviceHeight = Dimensions.get('window').height;
 var deviceWidth = Dimensions.get('window').width;
@@ -87,19 +91,19 @@ state = {
         var day_night = current.getHours();
         console.log('number:'+ day_night);
 
+        //--- Images for different times of the day:
         if (day_night <=7 && day_night<9 )
-            imgURL = require('../../img/avia1_l.jpg');
+            imgURL = require('../../img/field.png');
         else if (day_night<=9 && day_night<11)
-            imgURL = require('../../img/avia2.jpg');
+            imgURL = require('../../img/wallpaperjtc.png');
         else if (day_night<=11 && day_night<14)
             imgURL = require('../../img/oval4.jpg');
         else if (day_night<=14 && day_night<17)
-            imgURL = require('../../img/img3.jpg');
+            imgURL = require('../../img/summergarden.png');
         else if (day_night<=17 && day_night<19)
-            imgURL = require('../../img/img5.jpg');
+            imgURL = require('../../img/wheelers.png');
         else 
-            imgURL = require('../../img/img1.jpg');
-
+            imgURL = require('../../img/summerhouse.png');
         console.log('imgURL: ' + imgURL);
     return (
 
@@ -172,7 +176,7 @@ state = {
                                 name='import-contacts'
                                 //type='ionicon'
                                 color= 'teal'//color='#517fa4'
-                                onPress={() => this.props.navigation.navigate('TenantDirectory')}
+                                onPress={() => this.props.navigation.navigate('Tenant')}
                                 />
                                 <Text style={styles.instructions}>Directory</Text>
                             </View>
@@ -210,6 +214,17 @@ state = {
                                 <Text style={styles.instructions}>Feedback</Text>
                             </View>
                            
+                           <View style={styles.iconContainer}>
+                            <Icon
+                                reverse
+                                size={45}
+                                name='business'
+                                //type='ionicon'
+                                color= 'rgb(0,85,184)'//color='#517fa4'
+                                onPress={() => this.props.navigation.navigate('AboutJTC')}
+                                />
+                                <Text style={styles.instructions}>About JTC</Text>
+                            </View>
 
                         </View>
                          </ScrollView>
@@ -288,7 +303,7 @@ class Tenant extends React.Component {
     });
     render() {
         const { params } = this.props.navigation.state;
-        return <TestDir />
+        return <TenantDirectory />
     }
 }
 
@@ -348,6 +363,7 @@ class FoodBev extends React.Component {
     }
 }
 
+//========CLASS TO CALL FEEDBACK PAGE ============
 class Feedback extends React.Component {
     static navigationOptions = ({navigation}) => ({
         title: 'Send Feedback',
@@ -360,7 +376,8 @@ class Feedback extends React.Component {
 
 
 /**
- * StackNavigator is like a collection to compile the different screens.\.
+ * StackNavigator is like a collection to compile the different screens.
+ * Make sure your 'navigate' path is same as the one in the stack. screen name must tally with class name.
  * 
  */
 const HomeStack = StackNavigator({
@@ -384,9 +401,6 @@ HomeStack.navigationOptions = {
     }
 }
 export default HomeStack;
-
-
-
 
 const styles = StyleSheet.create({
     iconContainer: {

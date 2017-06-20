@@ -1,22 +1,27 @@
+/**
+ * This functionality will allow users to view map of SAP eiher by:
+ *  - pinching
+ *  - double tap.
+ *  maxScale={X}  ---> X can be any integer you wish to zoom in. 
+ * Best performance for the images to be less than 1MB to reduce loading time.
+ */
+
+
 import React,{Component} from 'react';
 
-import {
-    StyleSheet,
-    View,
-    Text,
-    ScrollView, Picker, Platform, PickerIOS
-} from 'react-native';
+import {StyleSheet, View,Text, ScrollView, Picker} from 'react-native';
 
-import PhotoView from 'react-native-photo-view';
+import Image from 'react-native-transformable-image';
+
 const CONTENT = 
   {
        'busStop':{ 
-            title: 'Bus Stops Available',
-            url: 'https://firebasestorage.googleapis.com/v0/b/asap-c4472.appspot.com/o/Map%2FBusStop%2Fwf-home.jpg?alt=media&token=57396f62-4aa2-4986-a118-b2390f11738e', 
+            title: 'Bus Stops',
+            url: 'https://firebasestorage.googleapis.com/v0/b/asap-c4472.appspot.com/o/Map%2FBusStop%2FBUSSTOPMAP.png?alt=media&token=2ac0d750-5ccd-45ee-9975-cb4e708d011a', 
        },
         'lunchRoute': {
             title: 'Lunch',
-            url: 'https://firebasestorage.googleapis.com/v0/b/asap-c4472.appspot.com/o/Map%2FLunchRoute%2Fwf-sidebar.png?alt=media&token=1372c9e7-b177-4d16-a36b-9141db3237d5'
+            url: 'https://firebasestorage.googleapis.com/v0/b/asap-c4472.appspot.com/o/Map%2FLunchRoute%2FLUNCHMAP.png?alt=media&token=4e9d834d-26bf-46a3-a5c4-971f8d20068c'
         },
         'overview': {
             title: 'Overview',
@@ -37,34 +42,44 @@ export default class SAPMap extends Component {
         var type = CONTENT[this.state.mapType];
         console.log( "content type:" + type.title);
         console.log( "url link:" + type.url);
-        var PickerType = (Platform.OS === 'android')? Picker: PickeriOS;
-        //--- mapValue reads picker.item value.
+        
         return(
-
-            <View style={{flex:1}}>
-                <Text>Please choose a map view:</Text>
-            <PickerType
-                selectedValue={this.state.mapType}
-                onValueChange={(mapValue) => this.setState({mapType: mapValue})}>
-                    <PickerType.Item label = "Overview" value = "overview" />
-                    <PickerType.Item label = "Lunch" value = "lunchRoute" />
-                    <PickerType.Item label = "Bus Stop" value = "busStop" />
-                    
-                </PickerType>
-                
-                <PhotoView
-                    source={{uri: type.url}}
-                    minimumZoomScale={1}
-                    maximumZoomScale={10}
-                    onLoad={() => console.log("Image loaded!")}
-                    style={{flex: 1, width: undefined, height: undefined }} />
+            <View style={style.container}>
+                <Text>Select map view:</Text>
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        selectedValue={this.state.mapType}
+                        onValueChange={(mapValue) => this.setState({mapType: mapValue})}>
+                            <Picker.Item label = "Overview" value = "overview" />
+                            <Picker.Item label = "Lunch" value = "lunchRoute" />
+                            <Picker.Item label = "Bus Stop" value = "busStop" />
+                    </Picker>
+                    <Text>You are currently viewing: {type.title} map</Text>
+                </View>
+                <Image 
+                    enableTrasnform={true}
+                    enableScale={true}
+                    maxScale={10}
+                    style={styles.imageStyle}
+                    source={{uri: type.url}}/>
             </View>
         )
     }
 }
 
 var styles = StyleSheet.create({
-    pdf: {
-        flex:1
+    container: {
+        flex:1,
+        padding: 5,
+        backgroundColor: 'white'
+    },
+    imageStyle: {
+        flex: 1,
+        width: undefined,
+        height: undefined,
+    },
+
+    pickerContainer: {
+        flex:0,
     }
 });

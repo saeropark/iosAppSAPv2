@@ -1,4 +1,6 @@
-
+/**
+ * AboutJTC description. 
+ */
 import React, { Component } from 'react';
 import { Navigator, StyleSheet,TouchableOpacity,Text,View, Platform , TouchableHighlight} from 'react-native';
  
@@ -9,7 +11,7 @@ export default class AboutJTC extends Component {
             <View style={styles.container}>
 
            
-                <Text style={{fontSize:30, color: '#b510d3', padding:5}}> About JTC </Text>
+                <Text style={{fontSize:30, color: '(218,29,42,0.8)', padding:5}}> About JTC </Text>
                 <Text style={{padding: 10, fontSize: 16}}>
                 
                 JTC Corporation (JTC) is the lead agency in Singapore to spearhead the planning, 

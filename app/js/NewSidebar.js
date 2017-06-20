@@ -21,7 +21,7 @@ import ContactUs from './SidebarList/ContactUs';
 import AboutJTC from './SidebarList/AboutJTC';
 import TenantDirectory from './SidebarList/TenantDirectory';
 import SAPMap from './SidebarList/SAPMap';
-import TestDir from './AnnouncementLists/TestDir';
+//import TestDir from './AnnouncementLists/TestDir';
 import SendFeedback from './SidebarList/SendFeedback';
 
 import FoodStack from '../components/EventNavigation/TestFnB';
@@ -105,7 +105,7 @@ class MyHomeScreen extends React.Component {
     return (
         <View style= {styles.container}>
          <Image
-          source={require('../../img/avia_wallpaper.png')}
+          source={require('../../img/wallpaperjtc.png')}
           style={styles.imgContainer}>
           <View style={styles.parentContainer}>
                {/*<GestureRecognizer
@@ -291,7 +291,7 @@ class Tenant extends React.Component {
     });
     render() {
         const { params } = this.props.navigation.state;
-        return <TestDir />
+        return <TenantDirectory />
     }
 }
 

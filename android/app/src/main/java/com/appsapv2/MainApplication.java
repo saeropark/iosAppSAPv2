@@ -3,7 +3,7 @@ package com.appsapv2;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.evollu.react.fcm.FIRMessagingPackage;
+//import com.evollu.react.fcm.FIRMessagingPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -26,7 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new FIRMessagingPackage(),
+            //new FIRMessagingPackage(),
             new PhotoViewPackage(),
             new MapsPackage()
       );

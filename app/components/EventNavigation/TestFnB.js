@@ -13,8 +13,9 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {Icon, Button, Tile} from "react-native-elements";
 
-import AboutOval from '../../js/AnnouncementLists/AboutOval';
-import TestDir from '../../js/AnnouncementLists/TestDir';
+import AboutOval from '../../js/FnBComponent/AboutOval';
+import FnBDirectory from '../../js/FnBComponent/FnBDirectory';
+//import TestDir from '../../js/AnnouncementLists/TestDir';
 
 var REQUEST_URL = 'https://asap-c4472.firebaseio.com/.json';
 var deviceHeight = Dimensions.get('window').height;
@@ -31,10 +32,10 @@ class OvalTab extends React.Component {
 
 class DirectoryTab extends React.Component {
   static navigationOptions = {
-        tabBarLabel: 'Directory'
+        tabBarLabel: 'F&B Directory'
     }
   render() {
-    return <TestDir/>
+    return <FnBDirectory/>
   }
 }
 

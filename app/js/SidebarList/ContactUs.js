@@ -11,14 +11,13 @@ export default class ContactUs extends Component {
         return(
             <View style={styles.container}>
 
-                <Text style={{fontSize:30, color: '#b510d3', padding:5}}> Contact Us </Text>
+                <Text style={{fontSize:30, color: 'rgba(218,29,42,0.8)', padding:5}}> Contact Us </Text>
                 <Text style={{padding: 10, fontSize: 16,}}>
                     JTC Headquarters{"\n"}
                     JTC Corporation{"\n"}
                     The JTC Summit{"\n"}
                     8 Jurong Town Hall Road{"\n"}
                     Singapore 609434{"\n"}
-                    Location Map{"\n"}
                     Email: askjtc@jtc.gov.sg{"\n"}
                     {"\n"}
                     Contact Centre Hotline{"\n"}
