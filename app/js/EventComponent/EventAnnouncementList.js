@@ -862,8 +862,11 @@ const AnnStack = StackNavigator({
 
 };
 
-
-
+/**
+ * Must be in order of how you want your tab to look.
+ * Expected tab output:
+ * UPCOMING | PAST
+ */
 const EventTab = TabNavigator({
     Upcoming: { screen: AnnStack },
     //Past: { screen: PastStack },
@@ -885,10 +888,9 @@ const EventTab = TabNavigator({
     }
 );
 
+//make sure they are in the same stack to allow fwd/back navigation
 const EventStack = StackNavigator({
     Home: {screen: EventTab},
-    // List: {screen: EventList},
-    // Info: {screen: EventDetail},
 },
 
 );
@@ -899,7 +901,6 @@ EventStack.navigationOptions = {
 
 };
 
- 
  export default EventTab;
 
 var styles = StyleSheet.create ({

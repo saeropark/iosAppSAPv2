@@ -797,6 +797,11 @@ const LunchStack = StackNavigator({
 };
 
 
+/**
+ * Must be in order of how you want your tab to look.
+ * Expected tab output:
+ * AM | PM | LUNCH
+ */
 const RouteTab = TabNavigator({
   AM : { screen: AMStack },
   PM : { screen: PMStack },

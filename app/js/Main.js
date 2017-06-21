@@ -5,19 +5,7 @@
  * Each icon 'navigates' points to the path name under the stack. MUST TALLY!
  */
 import React, {Component} from 'react';
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet, 
-  Platform,
-  AlertIOS,
-  TouchableHighlight,
-  TouchableOpacity,
-  Dimensions,
-  ScrollView,
-  NetInfo
-} from 'react-native';
+import {Text,View,Image,StyleSheet, Platform,AlertIOS,TouchableHighlight,TouchableOpacity,Dimensions,ScrollView, NetInfo} from 'react-native';
 import { StackNavigator, DrawerNavigator} from 'react-navigation';
 import { Icon , Button} from 'react-native-elements';
 import SlidingUpPanel from 'react-native-sliding-up-panel';
@@ -35,12 +23,10 @@ import RouteStack from './ShuttleBusComponent/BusRoute';
 
 var deviceHeight = Dimensions.get('window').height;
 var deviceWidth = Dimensions.get('window').width;
-
 var MAXIMUM_HEIGHT = (deviceHeight - 100 )/3;
 var MINUMUM_HEIGHT = 50;
 //======== SCREEN ON LOAD ===========
 class MyHomeScreen extends React.Component {
-
 state = {
     connectionInfo: null,
   };
@@ -124,8 +110,6 @@ state = {
                     allowStayMiddle={false}
                     getContainerHeight={this.getContainerHeight}
                     handlerDefaultView={<HandlerOne heightState={this.state.containerHeight}/>}>
-                
-                    
                       <ScrollView
                             ref={(scrollView) => { _scrollView = scrollView; }}
                             automaticallyAdjustContentInsets={true}
@@ -138,7 +122,6 @@ state = {
                                 reverse
                                 name='event'
                                 size={45}
-                                //type='ionicon'
                                 color='#ffcc00'
                                 onPress={() => this.props.navigation.navigate('Announcement')}
                             />
@@ -151,7 +134,6 @@ state = {
                                 reverse
                                 size={45}
                                 name='local-dining'
-                                //type='ionicon'
                                 color='red'
                                 onPress={() => this.props.navigation.navigate('Food')}
                             />
@@ -162,7 +144,6 @@ state = {
                                 reverse
                                 size={45}
                                 name='directions-bus'
-                                //type='ionicon'
                                 color= '#b510d3'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('Bus')}
                                 />
@@ -174,7 +155,6 @@ state = {
                                 reverse
                                 size={45}
                                 name='import-contacts'
-                                //type='ionicon'
                                 color= 'teal'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('Tenant')}
                                 />
@@ -185,7 +165,6 @@ state = {
                                 reverse
                                 size={45}
                                 name='map'
-                                //type='ionicon'
                                 color= 'deeppink'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('SAPMap')}
                                 />
@@ -196,7 +175,6 @@ state = {
                                 reverse
                                 size={45}
                                 name='contact-phone'
-                                //type='ionicon'
                                 color= 'deepskyblue'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('ContactUs')}
                                 />
@@ -207,7 +185,6 @@ state = {
                                 reverse
                                 size={45}
                                 name='email'
-                                //type='ionicon'
                                 color= 'orange'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('Feedback')}
                                 />
@@ -219,17 +196,13 @@ state = {
                                 reverse
                                 size={45}
                                 name='business'
-                                //type='ionicon'
                                 color= 'rgb(0,85,184)'//color='#517fa4'
                                 onPress={() => this.props.navigation.navigate('AboutJTC')}
                                 />
                                 <Text style={styles.instructions}>About JTC</Text>
                             </View>
-
                         </View>
-                         </ScrollView>
-                        
-                       
+                         </ScrollView>            
                 </SlidingUpPanel>
             </View>
         
@@ -237,28 +210,24 @@ state = {
       </View>
     );
   }
-  getContainerHeight = (height) => {
-    this.setState({
-      containerHeight : height
-    });
-  }
+//   getContainerHeight = (height) => {
+//     this.setState({
+//       containerHeight : height
+//     });
+//   }
 
 
 };
 
-class HandlerOne extends Component{
-
-  
+class HandlerOne extends Component{  
   render() {
         var height = this.props.heightState;
         console.log('height' + height);
       //<Text style={styles.handlerText}>Slide to pull up</Text> 
     return (
-
         <Animatable.View animation="pulse" easing="ease-out" iterationCount="infinite" style={styles.textContainer}>
              {/*<Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>*/}
                  <Icon
-                
                     name={(height === MAXIMUM_HEIGHT) ?'keyboard-arrow-down': 'airplanemode-active'}
                     color= '#fff'//color='#517fa4'
                     />

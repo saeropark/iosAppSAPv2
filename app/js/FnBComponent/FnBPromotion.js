@@ -20,6 +20,7 @@ var REQUEST_URL = 'https://asap-c4472.firebaseio.com/.json';
 var deviceHeight = Dimensions.get('window').height;
 var deviceWidth = Dimensions.get('window').width;
 
+//------------------ TABS ----------------------//
 class OvalTab extends React.Component {
   static navigationOptions = {
         tabBarLabel: 'OVAL'
@@ -46,6 +47,14 @@ class PromoTab extends React.Component {
     return <PromoList/>
   }
 }
+
+/** =================== RENDERING INFORMATION ===================
+ * ::::: PROMOLIST :::::
+ * PromoList will fetch json data from the REQUEST_URL and display under listview.
+ * Spinner will stop once data is loaded. 
+ * Once a promotion poster is pressed, it will call PromoDetail class. 
+ */
+
 class PromoList extends React.Component {
   static navigationOptions = ({ navigation }) => ({
      header: null,
@@ -84,7 +93,7 @@ class PromoList extends React.Component {
         .done();
     }
     render() {
-      //const { navigate } = this.props.navigation;
+      //returns data in listview. within listview, format of data will be rendered under 'renderPromotion'
         return (
             <View style={{flex:1}}>
                 <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
@@ -97,52 +106,35 @@ class PromoList extends React.Component {
         );
     }
 
-
+    //POSTER is displayed
     renderPromotion(event) {
         console.log('img ' + event.fileURL);
-        /* <TouchableHighlight 
-                onPress={() => this.testOnPress(event)}>
-        <View style={styles.dateColumn}>
-            <Image
-                style={{flex:1, width: undefined, height: deviceHeight- 100, }}
-                resizeMode='contain'
-                source={{uri: (event.fileURL === "")? '../../img/SAP.png' : event.fileURL}}
-            />
-           <Text style = {styles.title}> {event.title}</Text>
-
-        </View>
-          </TouchableHighlight>*/
-
         var img = event.fileURL;
         console.log(img);
         return (
-          
-                <View>
-                    {/*<TouchableHighlight onPress={() => this.testOnPress(event)}>*/}
-                    <View style = {styles.container}>
-                            <View style={styles.dateColumn}>
-                            <Tile
-                                
-                                onPress={()=>this.testOnPress(event)}
-                                onLongPress={()=> this.testOnPress(event)}
-                                imageSrc={{uri: (event.fileURL)}}
-                                //title={event.title}
-                                //imageContainerStyle={{color: 'transparent'}}
-                                //icon={{name: 'play-circle', type: 'font-awesome'}}  // optional
-                                //contentContainerStyle={{height: 70}}
-                                />
-                             <Text style = {styles.title}> {event.title}</Text>
-                             </View>
-                    </View>
-                    {/*</TouchableHighlight>*/}
-                    <View style = {styles.separator}/>
+            <View>
+                <View style = {styles.container}>
+                    <View style={styles.dateColumn}>
+                    <Tile
+                        onPress={()=>this.imgOnPress(event)}
+                        onLongPress={()=> this.imgOnPress(event)}
+                        imageSrc={{uri: (event.fileURL)}}
+                        //title={event.title}
+                        //imageContainerStyle={{color: 'transparent'}}
+                        //icon={{name: 'play-circle', type: 'font-awesome'}}  // optional
+                        //contentContainerStyle={{height: 70}}
+                        />
+                        <Text style = {styles.title}> {event.title}</Text>
+                        </View>
                 </View>
-          
+                <View style = {styles.separator}/>
+            </View>
         );
     }
 
-    testOnPress(event) {
-        console.log("TestonPress");
+    //imgOnPress will pass 'event' object to the Info page identified under PromoStack
+    imgOnPress(event) {
+        console.log("imgOnPress");
         this.props.navigation.navigate('Info', {event});
     }
 
@@ -163,6 +155,11 @@ class PromoList extends React.Component {
 }
 
 
+/** =================== DISPLAY DETAILED INFORMATION ===================
+ * ::::: PROMODETAIL :::::
+ * PromoDetail will receive information as object from PROMOLIST.
+ * PromoDetail reads object via state (see 'this.props.navigation.state')
+ */
 class PromoDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -188,21 +185,18 @@ class PromoDetail extends React.Component {
         
         console.log('avail: ' + imgURL);
         return (
-            
             <View style={styles.container}>
                 <ScrollView>
                 <View style={styles.contentContainer}>
-                       <Image
-                            style={{flex:1, width: undefined, height: deviceHeight, }}
-                            resizeMode='contain'
-                            source={imgURL}
-                            //source={{uri: (params.event.fileURL === "")? '../../img/SAP.png' : params.event.fileURL}}
-                        />
+                    <Image
+                        style={{flex:1, width: undefined, height: deviceHeight, }}
+                        resizeMode='contain'
+                        source={imgURL}
+                        //source={{uri: (params.event.fileURL === "")? '../../img/SAP.png' : params.event.fileURL}}
+                    />
                     </View>
-                        
                         <Text style={styles.title}>{params.event.title}</Text>
                         <View style={styles.descriptionContainer}>
-                           
                             <View style={styles.iconText}>
                                 <Icon
                                     name='today'/>
@@ -220,15 +214,12 @@ class PromoDetail extends React.Component {
                             </View>
                                 <Text style={styles.description}> {params. event.description}</Text>
                             </View>
-                    
-                
-                <Button
-                    color = "#FFFFFF"
-                    title ="Back to List"
-                    backgroundColor="#FFA500"
-                    onPress={() => goBack()} 
-                    />
-
+                            <Button
+                                color = "#FFFFFF"
+                                title ="Back to List"
+                                backgroundColor="#FFA500"
+                                onPress={() => goBack()} 
+                                />
                 </ScrollView>
         </View>
         );
@@ -240,6 +231,12 @@ const PromoStack = StackNavigator( {
     List: {screen: PromoList},
     Info: {screen: PromoDetail}
 })
+
+/**
+ * Must be in order of how you want your tab to look.
+ * Expected tab output:
+ * PROMOTION | OVAL | F&B DIRECTORY
+ */
 const FoodTab = TabNavigator({
     Promotion: { screen: PromoStack},
     Oval: { screen: OvalTab },
@@ -263,6 +260,7 @@ const FoodTab = TabNavigator({
 
 );
 
+//make sure they fall under the same stack to allow forward and prev navigation
 const FoodStack = StackNavigator({
     Home: {screen: FoodTab},
 })
